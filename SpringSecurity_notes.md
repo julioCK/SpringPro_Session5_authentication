@@ -22,9 +22,66 @@ Também conta com recursos de proteção de ataques comuns, como: CSRF, XSS, Cli
 > + **Anotações**: `@PreAuthorize`, `@Secured`, `@RolesAllowed`.
 
 ---
-### SecurityFilterChain
-O Spring Security protege uma aplicação ao adicionar uma cadeia de **filtros de segurança** no processamento
-de cada requisição HTTP. 
+## Implementação
 
-Todas as requisições são interceptadas antes que cheguem na camada Controller (Spring MVC). Nessa cadeia são
-aplicadas a autenticação, autorização e proteções adicionais.
+De modo geral, para usar as funcionalidades do Spring Security, existem algumas estruturas que podem
+ser implementadas:
+    
+- ### Classe de configuração de segurança
+    - É importante criar uma classe que vai conter as principais configurações de segurança. Essa classe deve
+        ser anotada com `@Configuration`.
+    - Dentro dessa classe vai um método `SecurityFilterChain` anotado como `@Bean` (componente do Spring). 
+
+>#### SecurityFilterChain
+> É uma cadeia de **filtros de segurança** no processamento de cada requisição HTTP. 
+> 
+> No SecurityFilterChain é possível definir: **filtros, autenticação, regras de acesso, proteções**.
+
+Ex:
+```Java
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+            .httpBasic();  // ou .formLogin();
+        return http.build();
+    }
+}
+```
+---
+- ### UserDetailService
+    - O `UserDetailService` é uma **interface** do Spring Security que permite definir como carregar
+        o usuário e suas permissões.
+    - Éssa interface serve como ponto de integração entre o Spring Security e o repositório de usuários
+      (banco de dados, memória, arquivos, etc).
+    - É usada quando a **autenticação é baseada em <ins>usuário e senha**.
+
+:arrow_right: #### Método principal da interface UserDetailService:
+```Java
+UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+```
+- O Spring chama esse método passando o parâmetro (nome de usuário, podendo ser email, nick, etc);
+- O método deve retorna um objeto que implementa a interface `UserDetails`.
+
+> **UserDetails**
+> É outra interface que representa um usuário autenticado.
+> 
+> Os métodos dessa interface são:
+> - `getUsername()`: String
+> - `getPassword()`: String
+> - `getAuthorities()`: Collection < GrantedAuthority* >
+> - `isAccountNonExpired()`: boolean
+> - `isAccountNonLocked()`: boolean
+> - `isCredentialsNonExpired()`: boolean
+> - `isEnabled()`: boolean
+
+> ***GrantedAuthority** é uma interface que vai representar um "papel" ou autorização que um usuário possui.
+> ```Java
+> public interface GrantedAuthority {
+>    String getAuthority();
+> }
+> ```
