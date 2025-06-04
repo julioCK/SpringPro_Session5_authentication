@@ -1,17 +1,4 @@
-# Controle de acesso
-
----
-### I - Modelo de dados
-A implementação do controle de acesso nessa aplicação será feita por ***perfis de usuário*** (roles).
-
-Para isso, primeiramente é necessário implementar um modelo de dados para armazenar esses perfis de usuário. A
-imagem abaixo ilustra esse modelo:
-
-![modelo de dados](user-role.png)
-Cada usuário pode ter vários perfis de acesso, e cada perfil pode ser de vários usuários.
-
----
-### II - Spring Boot Security
+# Spring Boot Security
 O Spring Security é um framework do ecossistema Spring que oferece soluções de segurança.
 
 O Spring Security oferece recursos para **autenticação** (provar quem é o usuário) e **autorização** (definir
@@ -34,16 +21,10 @@ Também conta com recursos de proteção de ataques comuns, como: CSRF, XSS, Cli
 > + **Authority**: permissão mais granular de acesso;
 > + **Anotações**: `@PreAuthorize`, `@Secured`, `@RolesAllowed`.
 
-Para usar o Spring Security na aplicação, é necessário adicionar a dependência no pom.xml:
-```xml
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+---
+### SecurityFilterChain
+O Spring Security protege uma aplicação ao adicionar uma cadeia de **filtros de segurança** no processamento
+de cada requisição HTTP. 
 
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-```
+Todas as requisições são interceptadas antes que cheguem na camada Controller (Spring MVC). Nessa cadeia são
+aplicadas a autenticação, autorização e proteções adicionais.
