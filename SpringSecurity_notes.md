@@ -60,7 +60,7 @@ public class SecurityConfig {
       (banco de dados, memória, arquivos, etc).
     - É usada quando a **autenticação é baseada em <ins>usuário e senha**.
 
-:arrow_right: #### Método principal da interface UserDetailService:
+:arrow_right: Método principal da interface UserDetailService:
 ```Java
 UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 ```
