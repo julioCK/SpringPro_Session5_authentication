@@ -1,6 +1,7 @@
 package com.devsuperior.demo.entities;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_role")
-public class Role {
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +37,11 @@ public class Role {
         this.id = id;
     }
 
+    /*
+    *   A interface GrantedAuthority serve para o Spring Security recuperar a "autoridade" de um usuário, ou seja, o papel desse usuário no sistema (permissões de acesso e ações).
+    *   Para implementar essa interface é necessário apenas implementar seu metodo principal: getAuthorirty();
+    *   Como ja declaramos um atributo authority para essa classe, basta implementar o metodo get desse atributo. */
+    @Override
     public String getAuthority() {
         return authority;
     }

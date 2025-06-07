@@ -65,7 +65,7 @@ public class SecurityConfig {
 UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 ```
 - O Spring chama esse método passando o parâmetro (nome de usuário, podendo ser email, nick, etc);
-- O método deve retorna um objeto que implementa a interface `UserDetails`.
+- O método deve retornar um objeto que implementa a interface `UserDetails`.
 
 > **UserDetails**
 > É outra interface que representa um usuário autenticado.
@@ -85,3 +85,6 @@ UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 >    String getAuthority();
 > }
 > ```
+
+Modelo de dados para ilustrar as entidades descritas acima:
+![userDetails](UserDetailsService.jpg)
